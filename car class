@@ -1,0 +1,120 @@
+using System;
+
+namespace SimpleCarGame
+{
+    // Car class
+    public class Car
+    {
+        // Basic car properties
+        public string Make { get; set; }  // Brand of the car (e.g., "Toyota")
+        public string Model { get; set; } // Model of the car (e.g., "Corolla")
+        public int Year { get; set; }     // Year of manufacture
+        public float Speed { get; private set; }  // Current speed (km/h)
+        public float Fuel { get; private set; }   // Fuel level (percentage 0-100)
+        public float Health { get; private set; } // Health level (percentage 0-100)
+
+        // Constants for maximum speed, fuel, and health
+        private const float MaxSpeed = 200f;
+        private const float MaxFuel = 100f;
+        private const float MaxHealth = 100f;
+
+        // Constructor to initialize the car
+        public Car(string make, string model, int year)
+        {
+            Make = make;
+            Model = model;
+            Year = year;
+            Speed = 0f;
+            Fuel = MaxFuel;
+            Health = MaxHealth;
+        }
+
+        // Method to accelerate the car
+        public void Accelerate(float amount)
+        {
+            if (Fuel <= 0)
+            {
+                Console.WriteLine("Can't accelerate, you're out of fuel!");
+                return;
+            }
+
+            Speed += amount;
+            if (Speed > MaxSpeed) Speed = MaxSpeed;  // Ensure speed doesn't exceed max
+
+            Fuel -= amount * 0.1f;  // Decrease fuel based on acceleration
+            if (Fuel < 0) Fuel = 0;
+
+            Console.WriteLine($"Accelerated to {Speed} km/h. Fuel: {Fuel}%.");
+        }
+
+        // Method to brake the car
+        public void Brake(float amount)
+        {
+            Speed -= amount;
+            if (Speed < 0) Speed = 0;  // Speed cannot go below 0
+
+            Console.WriteLine($"Braked to {Speed} km/h.");
+        }
+
+        // Method to refuel the car
+        public void Refuel(float amount)
+        {
+            Fuel += amount;
+            if (Fuel > MaxFuel) Fuel = MaxFuel;  // Ensure fuel doesn't exceed max
+
+            Console.WriteLine($"Refueled to {Fuel}%. Keep driving!");
+        }
+
+        // Method to repair the car
+        public void Repair(float amount)
+        {
+            Health += amount;
+            if (Health > MaxHealth) Health = MaxHealth;  // Ensure health doesn't exceed max
+
+            Console.WriteLine($"Repaired the car. Health: {Health}%.");
+        }
+
+        // Method to take damage
+        public void TakeDamage(float amount)
+        {
+            Health -= amount;
+            if (Health < 0) Health = 0;  // Health can't go below 0
+
+            Console.WriteLine($"Car took damage! Health: {Health}%.");
+        }
+
+        // Method to display car status
+        public void DisplayStatus()
+        {
+            Console.WriteLine($"{Year} {Make} {Model}");
+            Console.WriteLine($"Speed: {Speed} km/h");
+            Console.WriteLine($"Fuel: {Fuel}%");
+            Console.WriteLine($"Health: {Health}%");
+        }
+    }
+
+    // Game example class
+    public class Game
+    {
+        public static void Main(string[] args)
+        {
+            // Create a new car object
+            Car myCar = new Car("Toyota", "Corolla", 2023);
+
+            // Display initial car status
+            myCar.DisplayStatus();
+
+            // Simulate driving
+            myCar.Accelerate(50);
+            myCar.Brake(20);
+            myCar.Refuel(30);
+
+            // Take some damage and repair
+            myCar.TakeDamage(40);
+            myCar.Repair(20);
+
+            // Display the updated car status
+            myCar.DisplayStatus();
+        }
+    }
+}

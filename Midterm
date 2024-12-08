@@ -4,99 +4,80 @@ class Program
 {
     static void Main()
     {
-        // Get player's name
-        Console.Write("Enter your name: ");
+        Console.WriteLine("Welcome to the 'Would You Rather' Game!");
+
+        // Ask for the player's name
+        Console.Write("Please enter your name: ");
         string playerName = Console.ReadLine();
 
         // Questions and choices
         string[] questions = {
-            "Would you rather have super strength (A) or super speed (B)?",
-            "Would you rather travel to the future (A) or the past (B)?",
-            "Would you rather be a famous musician (A) or a famous athlete (B)?",
-            "Would you rather live in a big city (A) or a small town (B)?"
+            "Would you rather: \nA) Travel to the past \nB) Travel to the future",
+            "Would you rather: \nA) Have the ability to fly \nB) Have the ability to be invisible",
+            "Would you rather: \nA) Live in a city \nB) Live in the countryside",
+            "Would you rather: \nA) Be a famous actor \nB) Be a revolutionary scientist"
         };
 
-        // Store player choices
-        char[] playerChoices = new char[questions.Length];
+        // Store answers
+        char[] answers = new char[questions.Length];
 
         // Ask questions
         for (int i = 0; i < questions.Length; i++)
         {
-            Console.WriteLine($"\n{questions[i]}");
+            Console.WriteLine(questions[i]);
             Console.Write("Your choice (A/B): ");
-            playerChoices[i] = Char.ToUpper(Console.ReadKey().KeyChar);
-            Console.WriteLine(); // Move to the next line
+            char choice = Console.ReadKey().KeyChar;
+            Console.WriteLine(); // Move to the next line for readability
+
+            // Validate input
+            while (choice != 'A' && choice != 'B')
+            {
+                Console.Write("Invalid choice. Please enter A or B: ");
+                choice = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+            }
+
+            answers[i] = char.ToUpper(choice); // Store the validated answer
         }
 
-        // Provide feedback based on answers
-        ProvideFeedback(playerName, playerChoices);
+        // Generate a remark based on answers
+        GenerateRemark(playerName, answers);
     }
 
-    static void ProvideFeedback(string name, char[] choices)
+    static void GenerateRemark(string playerName, char[] answers)
     {
-        Console.WriteLine($"\nThank you for playing, {name}!");
-        Console.WriteLine("Here are your results based on your choices:\n");
+        Console.WriteLine("\nThank you for participating, " + playerName + "!");
+        int choiceA = 0, choiceB = 0;
 
-        // Feedback for each individual question based on player choice
-        ProvideChoiceFeedback(name, choices);
-
-        // Add a final remark based on the combination of choices
-        Console.WriteLine($"\n{name}, you seem to have a unique blend of preferences!");
-        if (choices[0] == 'A' && choices[1] == 'A')
+        // Count A's and B's
+        foreach (char answer in answers)
         {
-            Console.WriteLine($"{name}, you are someone who values strength and is forward-thinking about the future!");
+            if (answer == 'A') choiceA++;
+            else if (answer == 'B') choiceB++;
         }
-        else if (choices[2] == 'B' && choices[3] == 'B')
+
+        // Create a personalized remark
+        if (choiceA > choiceB)
         {
-            Console.WriteLine($"{name}, you love peace and simplicity—perhaps you are a quiet and grounded person.");
+            Console.WriteLine("You seem to be a person who loves adventure and exploring the unknown!");
+        }
+        else if (choiceB > choiceA)
+        {
+            Console.WriteLine("You appear to be someone who values comfort and stability in life!");
         }
         else
         {
-            Console.WriteLine($"{name}, your choices show a balanced personality that seeks adventure, but with a heart for peace.");
-        }
-    }
-
-    static void ProvideChoiceFeedback(string name, char[] choices)
-    {
-        // Feedback for the first question: Super strength vs Super speed
-        if (choices[0] == 'A')
-        {
-            Console.WriteLine($"You prefer super strength, {name}. You value raw power and resilience!");
-        }
-        else
-        {
-            Console.WriteLine($"You prefer super speed, {name}. You are fast and adaptable!");
+            Console.WriteLine("You're a balanced individual who appreciates both adventure and stability!");
         }
 
-        // Feedback for the second question: Future vs Past
-        if (choices[1] == 'A')
+        // Additional remarks based on specific combinations of choices
+        if (answers[0] == 'A' && answers[1] == 'A')
         {
-            Console.WriteLine($"You are curious about the future, {name}. There are exciting times ahead, and you want to see them unfold!");
+            Console.WriteLine("You're someone who would not only explore time but also conquer the skies!");
         }
-        else
+        else if (answers[2] == 'B' && answers[3] == 'B')
         {
-            Console.WriteLine($"You value the past, {name}. There's much wisdom to be found in history!");
-        }
-
-        // Feedback for the third question: Musician vs Athlete
-        if (choices[2] == 'A')
-        {
-            Console.WriteLine($"You dream of being a musician, {name}. Music is in your soul, and the world needs your sound!");
-        }
-        else
-        {
-            Console.WriteLine($"You dream of being an athlete, {name}. Sports are where your passion lies, and you're ready to compete!");
-        }
-
-        // Feedback for the fourth question: Big city vs Small town
-        if (choices[3] == 'A')
-        {
-            Console.WriteLine($"You thrive in big cities, {name}! The energy and opportunities in bustling urban environments suit you.");
-        }
-        else
-        {
-            Console.WriteLine($"You enjoy the peace of small towns, {name}. The quiet, close-knit community gives you a sense of belonging.");
+            Console.WriteLine("You seem to be someone who would thrive in a peaceful environment, with big ideas and quiet reflection.");
         }
     }
 }
-

@@ -1,1 +1,95 @@
+using System;
 
+class Program
+{
+    static void Main()
+    {
+        // Get player's name
+        Console.Write("Enter your name: ");
+        string playerName = Console.ReadLine();
+
+        // Questions and choices
+        string[] questions = {
+            "Would you rather have super strength (A) or super speed (B)?",
+            "Would you rather travel to the future (A) or the past (B)?",
+            "Would you rather be a famous musician (A) or a famous athlete (B)?",
+            "Would you rather live in a big city (A) or a small town (B)?"
+        };
+
+        char[] playerChoices = new char[questions.Length];
+
+        // Ask questions
+        for (int i = 0; i < questions.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}. {questions[i]}");
+            Console.Write("Your choice (A/B): ");
+            playerChoices[i] = Char.ToUpper(Console.ReadKey().KeyChar);
+            Console.WriteLine(); // Move to the next line
+        }
+
+        // Provide feedback based on answers
+        ProvideFeedback(playerName, playerChoices);
+    }
+
+    static void ProvideFeedback(string name, char[] choices)
+    {
+        Console.WriteLine($"\nThank you for playing, {name}!");
+
+        int strengthCount = 0;
+        int futureCount = 0;
+        int musicianCount = 0;
+        int cityCount = 0;
+
+        // Count choices
+        foreach (char choice in choices)
+        {
+            switch (choice)
+            {
+                case 'A':
+                    strengthCount++;
+                    break;
+                case 'B':
+                    strengthCount--;
+                    break;
+            }
+        }
+
+        // Provide remarks based on choices
+        if (strengthCount > 0)
+        {
+            Console.WriteLine($"{name}, you seem to prefer powerful abilities and adventurous experiences!");
+        }
+        else
+        {
+            Console.WriteLine($"{name}, you seem to enjoy a more relaxed lifestyle and value history over power!");
+        }
+
+        // Additional remarks based on the other questions
+        if (choices[1] == 'A')
+        {
+            Console.WriteLine($"You are curious about the future, {name}! Exciting times ahead!");
+        }
+        else
+        {
+            Console.WriteLine($"You have a fondness for the past, {name}. There are many lessons to learn!");
+        }
+
+        if (choices[2] == 'A')
+        {
+            Console.WriteLine($"Music is your calling, {name}! Keep rocking!");
+        }
+        else
+        {
+            Console.WriteLine($"Sports seem to be your passion, {name}! Stay fit and active!");
+        }
+
+        if (choices[3] == 'A')
+        {
+            Console.WriteLine($"Big cities are where you thrive, {name}! The hustle and bustle is for you!");
+        }
+        else
+        {
+            Console.WriteLine($"You enjoy the peace of small towns, {name}. A great choice for tranquility!");
+        }
+    }
+}
